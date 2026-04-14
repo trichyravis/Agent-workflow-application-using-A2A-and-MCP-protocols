@@ -16,20 +16,15 @@ if use_case == "ECG Report Automation":
 
     if st.button("Generate ECG Report Draft"):
         context = {"ecg_id": ecg_id, "patient_id": patient_id}
-
         try:
-            # Call backend orchestrator
             res = requests.post(
                 f"{BASE_URL}/ecg_report_task",
                 json={"goal": "Automate ECG report", "context": context},
                 timeout=10
             )
-
             if res.status_code == 200:
                 statuses = res.json()
                 st.success("Workflow completed successfully.")
-
-                # Render the execution trace
                 for step in statuses:
                     step_name = step.get("metadata", {}).get("executed_step", "Unknown Step")
                     with st.expander(f"Step: {step_name.replace('_', ' ').title()}"):
@@ -38,6 +33,5 @@ if use_case == "ECG Report Automation":
                             st.info(f"**Artifact:** {step['artifacts'][0]}")
             else:
                 st.error(f"Backend error: {res.status_code}")
-
         except requests.exceptions.ConnectionError:
             st.error(f"Could not connect to backend at {BASE_URL}. Ensure main.py is running.")
