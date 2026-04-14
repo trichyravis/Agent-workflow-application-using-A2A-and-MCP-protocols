@@ -6,6 +6,7 @@ class Task(BaseModel):
     task_id: str
     goal: str
     context: Dict[str, str] = {}
+    plan_json: Optional[str] = None
     step: Optional[str] = None
     required_capabilities: List[str] = []
 
