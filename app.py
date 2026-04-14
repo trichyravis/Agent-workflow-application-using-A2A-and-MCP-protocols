@@ -3,7 +3,6 @@ import streamlit as st
 import requests
 
 BASE_URL = "http://localhost:8000"
-
 st.set_page_config(page_title="Philips A2A Console", layout="wide")
 st.title("🩺 Philips Agentic Workflow Console")
 
@@ -32,13 +31,13 @@ if use_case == "ECG Report Automation":
 
                 # Render the execution trace
                 for step in statuses:
-                    with st.expander(f"Step: {step['metadata']['executed_step'].replace('_', ' ').title()}"):
+                    step_name = step.get("metadata", {}).get("executed_step", "Unknown Step")
+                    with st.expander(f"Step: {step_name.replace('_', ' ').title()}"):
                         st.write(f"**Status:** {step['status']}")
-                        if step['artifacts']:
+                        if step.get("artifacts"):
                             st.info(f"**Artifact:** {step['artifacts'][0]}")
             else:
                 st.error(f"Backend error: {res.status_code}")
+
         except requests.exceptions.ConnectionError:
-            st.error(f"Could not connect to backend at {BASE_URL}. Ensure main-2.py is running.")
-        except Exception as e:
-            st.error(f"Unexpected error: {str(e)}")
+            st.error(f"Could not connect to backend at {BASE_URL}. Ensure main.py is running.")
