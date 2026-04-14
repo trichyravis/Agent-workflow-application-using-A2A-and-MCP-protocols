@@ -1,38 +1,41 @@
 
-import uvicorn
-from fastapi import FastAPI
-from schemas import Task, TaskStatus
-import uuid
+import streamlit as st
+import requests
 
-app = FastAPI(title="Philips A2A Backend")
+BASE_URL = "http://localhost:8000" 
 
-# In-memory store for task progress
-task_db: dict[str, list[TaskStatus]] = {}
+st.set_page_config(page_title="Philips Agentic Console", layout="wide")
+st.title("Philips Agentic Workflow Console")
 
-@app.post("/mri_drift_task")
-async def run_mri_drift_task(req: dict):
-    task_id = f"MRI-{uuid.uuid4().hex[:6]}"
-    # Mocking the Planner & Executor steps as defined in the document [cite: 1842-1886]
-    steps = [
-        TaskStatus(task_id=f"{task_id}.1", status="completed", metadata={"executed_step": "fetch_performance_logs"}),
-        TaskStatus(task_id=f"{task_id}.2", status="completed", metadata={"executed_step": "analyze_drift_trend"}),
-        TaskStatus(task_id=f"{task_id}.3", status="completed", metadata={"executed_step": "generate_corrective_plan"})
-    ]
-    task_db[task_id] = steps
-    return steps
+use_case = st.sidebar.selectbox("Select Workflow", ["MRI Performance Drift", "ECG Report Automation"])
 
-@app.post("/ecg_report_task")
-async def run_ecg_report_task(req: dict):
-    task_id = f"ECG-{uuid.uuid4().hex[:6]}"
-    # Mocking the ECG AI workflow steps [cite: 1905-1957]
-    steps = [
-        TaskStatus(task_id=f"{task_id}.1", status="completed", metadata={"executed_step": "fetch_ecg_waveform"}),
-        TaskStatus(task_id=f"{task_id}.2", status="completed", metadata={"executed_step": "run_ai_ecg_analysis"}),
-        TaskStatus(task_id=f"{task_id}.3", status="completed", metadata={"executed_step": "generate_preliminary_report"})
-    ]
-    task_db[task_id] = steps
-    return steps
+if use_case == "MRI Performance Drift":
+    st.header("MRI Performance Drift Investigation")
+    device_id = st.text_input("Device ID", "MRI-2026-0789")
+    hospital = st.text_input("Hospital", "Hospital-X")
+    
+    if st.button("Run MRI Workflow"):
+        payload = {"goal": "Investigate drift", "context": {"device_id": device_id, "hospital": hospital}}
+        try:
+            res = requests.post(f"{BASE_URL}/mri_drift_task", json=payload)
+            if res.status_code == 200:
+                st.success("Workflow Complete")
+                for step in res.json():
+                    st.json(step)
+            else: st.error(f"Backend Error: {res.status_code}")
+        except requests.exceptions.ConnectionError:
+            st.error("Connection Error: Is main.py running on port 8000?")
 
-if __name__ == "__main__":
-    # Runs on port 8000 to avoid conflict with Streamlit (8501)
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+elif use_case == "ECG Report Automation":
+    st.header("ECG AI-Assisted Report")
+    ecg_id = st.text_input("ECG ID", "ECG-2026-0456")
+    
+    if st.button("Generate Report"):
+        payload = {"goal": "Automate report", "context": {"ecg_id": ecg_id}}
+        try:
+            res = requests.post(f"{BASE_URL}/ecg_report_task", json=payload)
+            if res.status_code == 200:
+                st.success("Report Generated")
+                st.write(res.json())
+        except requests.exceptions.ConnectionError:
+            st.error("Connection Error: Ensure the FastAPI server is started.")
