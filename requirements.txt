@@ -1,7 +1,2 @@
 
-streamlit
-requests
-fastapi
-uvicorn
-pydantic>=2.8
-# python-mcp removed (unused & likely typo for 'mcp')
+streamlit>=1.38
