@@ -12,6 +12,6 @@ class Task(BaseModel):
 
 class TaskStatus(BaseModel):
     task_id: str
-    status: str  # "pending", "running", "completed", "failed"
+    status: str
     artifacts: List[str] = Field(default_factory=list)
     metadata: Dict[str, str] = Field(default_factory=dict)
