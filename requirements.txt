@@ -1,6 +1,7 @@
 
-fastapi>=0.115
-uvicorn>=0.30
-python-mcp>=0.5
-pydantic>=2.8
+streamlit
 requests
+fastapi
+uvicorn
+pydantic>=2.8
+python-mcp>=0.5
