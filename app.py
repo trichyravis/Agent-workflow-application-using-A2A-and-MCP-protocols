@@ -84,8 +84,7 @@ st.html(f"""
   h1 {{ font-weight: 800 !important; letter-spacing: -0.5px !important; }}
 
   /* ---------- inputs ---------- */
-  .stTextInput input, .stSelectbox div[data-baseweb="select"],
-  .stTextArea textarea {{
+  .stTextInput input, .stTextArea textarea {{
     background-color: rgba(14,36,64,0.85) !important;
     color: {TXT} !important;
     -webkit-text-fill-color: {TXT} !important;
@@ -95,6 +94,41 @@ st.html(f"""
   .stTextInput label, .stSelectbox label, .stTextArea label {{
     color: {LIGHT_BLUE} !important;
     -webkit-text-fill-color: {LIGHT_BLUE} !important;
+  }}
+
+  /* ---------- selectbox / dropdown fix ---------- */
+  .stSelectbox div[data-baseweb="select"] {{
+    background-color: rgba(14,36,64,0.85) !important;
+    border: 1px solid rgba(11,94,215,0.35) !important;
+    border-radius: 8px !important;
+  }}
+  .stSelectbox div[data-baseweb="select"] * {{
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+  }}
+  .stSelectbox svg {{
+    fill: {TXT} !important;
+  }}
+  /* dropdown menu / popover */
+  div[data-baseweb="popover"] {{
+    background-color: #0e2440 !important;
+    border: 1px solid rgba(11,94,215,0.4) !important;
+  }}
+  div[data-baseweb="popover"] li {{
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+    background-color: transparent !important;
+  }}
+  div[data-baseweb="popover"] li:hover {{
+    background-color: rgba(11,94,215,0.3) !important;
+  }}
+  div[data-baseweb="popover"] li[aria-selected="true"] {{
+    background-color: rgba(11,94,215,0.4) !important;
+  }}
+  /* single-value display text inside select */
+  div[data-baseweb="select"] span {{
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
   }}
 
   /* ---------- buttons ---------- */
@@ -163,7 +197,61 @@ st.html(f"""
   .stAlert {{ border-radius: 8px !important; }}
 
   /* ---------- JSON viewer ---------- */
-  pre {{ background: #0a1628 !important; border-radius: 8px !important; }}
+  pre {{
+    background: #0a1628 !important;
+    border-radius: 8px !important;
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+  }}
+  /* Streamlit JSON element */
+  [data-testid="stJson"],
+  [data-testid="stJson"] * {{
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+  }}
+  /* react-json-view overrides */
+  .react-json-view {{
+    background: #0a1628 !important;
+    color: {TXT} !important;
+  }}
+  .react-json-view .string-value {{ color: {GREEN} !important; -webkit-text-fill-color: {GREEN} !important; }}
+  .react-json-view .integer-value,
+  .react-json-view .float-value {{ color: {GOLD} !important; -webkit-text-fill-color: {GOLD} !important; }}
+  .react-json-view .boolean-value {{ color: {ORANGE} !important; -webkit-text-fill-color: {ORANGE} !important; }}
+  .react-json-view .null-value {{ color: {RED} !important; -webkit-text-fill-color: {RED} !important; }}
+  .react-json-view .object-key-val span,
+  .react-json-view .object-key-val {{ color: {TXT} !important; -webkit-text-fill-color: {TXT} !important; }}
+  .react-json-view .variable-row {{ color: {TXT} !important; -webkit-text-fill-color: {TXT} !important; }}
+  .react-json-view .icon-container {{ color: {MUTED} !important; }}
+  .react-json-view .node-ellipsis {{ color: {MUTED} !important; -webkit-text-fill-color: {MUTED} !important; }}
+  .react-json-view .brace-row {{ color: {MUTED} !important; -webkit-text-fill-color: {MUTED} !important; }}
+
+  /* ---------- expander ---------- */
+  [data-testid="stExpander"] {{
+    background: rgba(14,36,64,0.4) !important;
+    border: 1px solid rgba(11,94,215,0.2) !important;
+    border-radius: 10px !important;
+  }}
+  [data-testid="stExpander"] * {{
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+  }}
+  [data-testid="stExpander"] summary span {{
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+    font-weight: 600 !important;
+  }}
+
+  /* ---------- catch-all for stray dark text ---------- */
+  .stMarkdown, .stMarkdown p, .stMarkdown span,
+  .stText, .element-container {{
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+  }}
+  label, .stWidgetLabel span {{
+    color: {LIGHT_BLUE} !important;
+    -webkit-text-fill-color: {LIGHT_BLUE} !important;
+  }}
 
   /* ---------- scrollbar ---------- */
   ::-webkit-scrollbar {{ width: 6px; }}
