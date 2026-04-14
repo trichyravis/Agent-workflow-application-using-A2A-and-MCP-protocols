@@ -984,7 +984,27 @@ with tab_workflow:
                 with step_col2:
                     detail = result.get("detail", {})
                     if detail:
-                        st.json(detail)
+                        detail_lines = "".join(
+                            f'<div style="display:flex; justify-content:space-between; padding:3px 0; '
+                            f'border-bottom:1px solid rgba(11,94,215,0.1);">'
+                            f'<span style="color:{MUTED}; -webkit-text-fill-color:{MUTED}; '
+                            f'font-size:10px;">{k}</span>'
+                            f'<span style="color:{GOLD}; -webkit-text-fill-color:{GOLD}; '
+                            f'font-size:10px; font-weight:600; text-align:right; max-width:60%;">'
+                            f'{v}</span></div>'
+                            for k, v in detail.items()
+                        )
+                        st.html(f"""
+                        <div style="background:rgba(10,22,40,0.8); border:1px solid rgba(11,94,215,0.2);
+                            border-radius:8px; padding:10px 12px; user-select:none;
+                            font-family:'JetBrains Mono',monospace;">
+                            <div style="font-size:9px; color:{LIGHT_BLUE}; -webkit-text-fill-color:{LIGHT_BLUE};
+                                font-weight:600; text-transform:uppercase; letter-spacing:0.5px;
+                                margin-bottom:6px; border-bottom:1px solid rgba(11,94,215,0.2);
+                                padding-bottom:4px;">📊 Detail</div>
+                            {detail_lines}
+                        </div>
+                        """)
 
             step.status = "completed"
             step.end_time = datetime.now().strftime("%H:%M:%S")
@@ -1057,7 +1077,16 @@ with tab_workflow:
                 ],
                 "review": "APPROVED",
             }
-            st.json(trace)
+            st.html(f"""
+            <div style="background:#0a1628; border:1px solid rgba(11,94,215,0.2);
+                border-radius:8px; padding:16px; max-height:500px; overflow-y:auto;
+                user-select:text;">
+                <pre style="font-family:'JetBrains Mono',monospace; font-size:11px;
+                    color:{TXT}; -webkit-text-fill-color:{TXT}; white-space:pre-wrap;
+                    word-wrap:break-word; margin:0; background:transparent !important;">""" +
+            json.dumps(trace, indent=2)
+                .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            + """</pre></div>""")
 
 
 # ─────────── TAB 2: ARCHITECTURE ───────────
@@ -1348,8 +1377,20 @@ with tab_protocols:
     </div>
     """)
 
+    def _render_json_html(data: dict):
+        """Render a dict as styled HTML pre block with visible text."""
+        raw = json.dumps(data, indent=2).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+        st.html(f"""
+        <div style="background:#0a1628; border:1px solid rgba(11,94,215,0.2);
+            border-radius:8px; padding:14px; user-select:text;">
+            <pre style="font-family:'JetBrains Mono',monospace; font-size:11px;
+                color:{TXT}; -webkit-text-fill-color:{TXT}; white-space:pre-wrap;
+                word-wrap:break-word; margin:0; background:transparent !important;">{raw}</pre>
+        </div>
+        """)
+
     with st.expander("Task Request Schema"):
-        st.json({
+        _render_json_html({
             "task_id": "string — unique identifier",
             "goal": "string — natural language objective",
             "context": {"key": "value — domain-specific parameters"},
@@ -1359,7 +1400,7 @@ with tab_protocols:
         })
 
     with st.expander("Task Status Schema"):
-        st.json({
+        _render_json_html({
             "task_id": "string — matches request",
             "status": "pending | planning | running | reviewing | completed | failed",
             "artifacts": ["list of output file references"],
@@ -1367,7 +1408,7 @@ with tab_protocols:
         })
 
     with st.expander("MCP Tool Descriptor"):
-        st.json({
+        _render_json_html({
             "tool_id": "string — unique tool identifier",
             "name": "string — callable function name",
             "description": "string — what the tool does",
