@@ -3,13 +3,13 @@ import uvicorn
 import uuid
 from fastapi import FastAPI
 from typing import List
-from schemas import TaskStatus  # Assuming Task not used here
+from schemas import Task, TaskStatus
 
 app = FastAPI(title="Philips A2A Orchestrator")
 
 @app.post("/ecg_report_task", response_model=List[TaskStatus])
 async def run_ecg_report_task(req: dict):
-    """Simulates a dynamic planner-executor-reviewer system for ECG workflow."""
+    # This simulates a dynamic planner-executor-reviewer system
     task_id = f"ECG-{uuid.uuid4().hex[:6]}"
     return [
         TaskStatus(
