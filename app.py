@@ -109,21 +109,40 @@ st.html(f"""
   .stSelectbox svg {{
     fill: {TXT} !important;
   }}
-  /* dropdown menu / popover */
-  div[data-baseweb="popover"] {{
+  /* dropdown menu / popover — aggressive dark theme */
+  div[data-baseweb="popover"],
+  div[data-baseweb="popover"] > div,
+  div[data-baseweb="popover"] ul,
+  div[data-baseweb="menu"] {{
     background-color: #0e2440 !important;
+    background: #0e2440 !important;
     border: 1px solid rgba(11,94,215,0.4) !important;
+    border-radius: 8px !important;
   }}
-  div[data-baseweb="popover"] li {{
+  div[data-baseweb="popover"] li,
+  div[data-baseweb="menu"] li,
+  div[data-baseweb="popover"] ul li,
+  [role="option"] {{
     color: {TXT} !important;
     -webkit-text-fill-color: {TXT} !important;
     background-color: transparent !important;
+    background: transparent !important;
   }}
-  div[data-baseweb="popover"] li:hover {{
-    background-color: rgba(11,94,215,0.3) !important;
+  div[data-baseweb="popover"] li:hover,
+  div[data-baseweb="menu"] li:hover,
+  [role="option"]:hover,
+  [role="option"][aria-selected="true"] {{
+    background-color: rgba(11,94,215,0.35) !important;
+    background: rgba(11,94,215,0.35) !important;
+    color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
   }}
-  div[data-baseweb="popover"] li[aria-selected="true"] {{
-    background-color: rgba(11,94,215,0.4) !important;
+  /* override BaseWeb inline background on list items */
+  [data-baseweb="menu"] [role="option"] {{
+    background-color: #0e2440 !important;
+  }}
+  [data-baseweb="menu"] [role="option"]:hover {{
+    background-color: rgba(11,94,215,0.35) !important;
   }}
   /* single-value display text inside select */
   div[data-baseweb="select"] span {{
