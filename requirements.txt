@@ -2,5 +2,6 @@
 streamlit
 requests
 fastapi
-uvicorn[standard]
+uvicorn
 pydantic>=2.8
+mcp>=0.5  # Note: Official package is usually 'mcp', not 'python-mcp'
