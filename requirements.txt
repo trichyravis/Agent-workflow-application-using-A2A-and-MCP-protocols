@@ -2,6 +2,5 @@
 streamlit
 requests
 fastapi
-uvicorn
+uvicorn[standard]
 pydantic>=2.8
-python-mcp>=0.5
