@@ -10,22 +10,15 @@ Use Cases:
   1. MRI Performance Drift Investigation
   2. ECG AI-Assisted Report Automation
   3. Patient Monitoring Alert Triage
-
-Built for The Mountain Path Academy
-https://themountainpathacademy.com
-
-Author: Prof. V. Ravichandran
 """
 
 import streamlit as st
 import time
 import uuid
 import json
-import random
-from datetime import datetime, timedelta
-from dataclasses import dataclass, field, asdict
+from datetime import datetime
+from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Any
-from enum import Enum
 
 # ─────────────────────────────────────────────────────────────────────
 # 0.  PAGE CONFIG + BRAND TOKENS
@@ -37,13 +30,11 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Philips-inspired palette merged with Mountain Path tokens
+# Philips-inspired palette
 PHILIPS_BLUE   = "#0B5ED7"
 PHILIPS_DARK   = "#00205C"
-PHILIPS_LIGHT  = "#E8F0FE"
 GOLD           = "#FFD700"
 MID_BLUE       = "#004d80"
-CARD_BG        = "#112240"
 TXT            = "#e6f1ff"
 MUTED          = "#8892b0"
 GREEN          = "#28a745"
@@ -212,14 +203,6 @@ st.html(f"""
     font-weight: 700 !important;
   }}
 
-  /* ---------- expander ---------- */
-  .streamlit-expanderHeader {{
-    background: rgba(14,36,64,0.6) !important;
-    color: {TXT} !important;
-    -webkit-text-fill-color: {TXT} !important;
-    border-radius: 8px !important;
-  }}
-
   /* ---------- alerts ---------- */
   .stAlert {{ border-radius: 8px !important; }}
 
@@ -291,14 +274,6 @@ st.html(f"""
 # ─────────────────────────────────────────────────────────────────────
 # 2.  DATA MODELS  (A2A-style schemas)
 # ─────────────────────────────────────────────────────────────────────
-class TaskStatus(Enum):
-    PENDING   = "pending"
-    PLANNING  = "planning"
-    RUNNING   = "running"
-    REVIEWING = "reviewing"
-    COMPLETED = "completed"
-    FAILED    = "failed"
-
 @dataclass
 class AgentCard:
     """A2A Agent Card — runtime capability advertisement."""
@@ -330,17 +305,6 @@ class TaskStep:
     result_summary: str = ""
     start_time: Optional[str] = None
     end_time: Optional[str] = None
-
-@dataclass
-class WorkflowTask:
-    task_id: str
-    goal: str
-    context: Dict[str, Any]
-    status: str = "pending"
-    steps: List[TaskStep] = field(default_factory=list)
-    created_at: str = ""
-    completed_at: str = ""
-    review_result: str = ""
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -1442,41 +1406,3 @@ with tab_protocols:
             "parameters": {"param_name": "type — input schema"},
             "server": "string — MCP server hosting this tool"
         })
-
-
-# ─────────────────────────────────────────────────────────────────────
-# 10. FOOTER
-# ─────────────────────────────────────────────────────────────────────
-st.markdown("---")
-st.html(f"""
-<div style="text-align:center; padding:16px 0 8px; user-select:none;">
-    <div style="font-family:'Inter',sans-serif; font-size:14px; font-weight:600;
-        color:{GOLD}; -webkit-text-fill-color:{GOLD}; margin-bottom:6px;">
-        The Mountain Path Academy — World of Finance
-    </div>
-    <div style="font-family:'Inter',sans-serif; font-size:12px;
-        color:{MUTED}; -webkit-text-fill-color:{MUTED}; margin-bottom:4px;">
-        Prof. V. Ravichandran &nbsp;·&nbsp;
-        Visiting Faculty @ NMIMS Bangalore, BITS Pilani, RV University Bangalore, Goa Institute of Management
-    </div>
-    <div style="margin-top:6px;">
-        <a href="https://themountainpathacademy.com" target="_blank"
-           style="color:{GOLD}; -webkit-text-fill-color:{GOLD}; text-decoration:none;
-           font-family:'Inter',sans-serif; font-size:12px; font-weight:500;">
-            🌐 themountainpathacademy.com
-        </a>
-        &nbsp;&nbsp;·&nbsp;&nbsp;
-        <a href="https://www.linkedin.com/in/trichyravis" target="_blank"
-           style="color:{GOLD}; -webkit-text-fill-color:{GOLD}; text-decoration:none;
-           font-family:'Inter',sans-serif; font-size:12px; font-weight:500;">
-            💼 LinkedIn
-        </a>
-        &nbsp;&nbsp;·&nbsp;&nbsp;
-        <a href="https://github.com/trichyravis" target="_blank"
-           style="color:{GOLD}; -webkit-text-fill-color:{GOLD}; text-decoration:none;
-           font-family:'Inter',sans-serif; font-size:12px; font-weight:500;">
-            💻 GitHub
-        </a>
-    </div>
-</div>
-""")
