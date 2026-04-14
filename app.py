@@ -97,12 +97,20 @@ st.html(f"""
   }}
 
   /* ---------- selectbox / dropdown fix ---------- */
-  .stSelectbox div[data-baseweb="select"] {{
-    background-color: rgba(14,36,64,0.85) !important;
+  .stSelectbox div[data-baseweb="select"],
+  .stSelectbox div[data-baseweb="select"] > div,
+  .stSelectbox [data-baseweb="select"] [data-baseweb="input"],
+  .stSelectbox [data-baseweb="select"] [role="combobox"],
+  .stSelectbox div[class*="control"] {{
+    background-color: #0e2440 !important;
+    background: #0e2440 !important;
     border: 1px solid rgba(11,94,215,0.35) !important;
     border-radius: 8px !important;
   }}
-  .stSelectbox div[data-baseweb="select"] * {{
+  .stSelectbox div[data-baseweb="select"] *,
+  .stSelectbox [data-baseweb="select"] span,
+  .stSelectbox [data-baseweb="select"] div[class*="singleValue"],
+  .stSelectbox [data-baseweb="select"] div[class*="placeholder"] {{
     color: {TXT} !important;
     -webkit-text-fill-color: {TXT} !important;
   }}
